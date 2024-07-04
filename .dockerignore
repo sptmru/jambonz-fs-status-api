@@ -1,0 +1,21 @@
+# Application files
+*.txt
+*.log
+build
+coverage
+node_modules
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+
+# Vosk proxy
+vosk-proxy

@@ -1,0 +1,24 @@
+# Application files
+*.txt
+!version.txt
+*.log
+logs
+.env
+build
+coverage
+node_modules
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# IDE files
+.vscode/*
+.idea
+
+# Sentry Config File
+.sentryclirc
