@@ -1,0 +1,45 @@
+{
+  "name": "jambonz-fs-status-api",
+  "version": "1.0.0",
+  "description": "feature server (FreeSWITCH) status API for Jambonz",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "ts-node --swc src/app.ts",
+    "start:dev": "ts-node-dev --respawn src/app.ts",
+    "start:nodemon": "nodemon --config nodemon.json",
+    "start:prod": "cd build && node app.js",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint --fix --ext .ts",
+    "format": "prettier --write \"**/*.{js,ts}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sptmru/jambonz-fs-status-api.git"
+  },
+  "keywords": [
+    "jambonz",
+    "voip",
+    "freeswitch"
+  ],
+  "author": "Soslan Aldatov <soslanaldatov@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.6.7",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
+  },
+  "dependencies": {
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^4.0.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "redis": "^4.6.15",
+    "winston": "^3.13.0",
+    "winston-loki": "^6.1.2"
+  }
+}
