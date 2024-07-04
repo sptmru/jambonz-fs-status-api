@@ -1,0 +1,33 @@
+services:
+  fs-status-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ./docker-entrypoint.sh
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./logs:/usr/src/app/logs
+    restart: unless-stopped
+    environment:
+      - LOKI_ENABLED=false
+    ports:
+      - '${HTTP_PORT:-8080}:${HTTP_PORT:-8080}'
+      - '${WS_PORT:-8081}:${WS_PORT:-8081}'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:${HTTP_PORT}/api/v1/health']
+      interval: 5s
+      timeout: 15s
+      retries: 5
+      start_period: 3s
+    depends_on:
+      - redis
+  redis:
+    image: redis:7.2.5
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+volumes:
+  redis_data: {}
