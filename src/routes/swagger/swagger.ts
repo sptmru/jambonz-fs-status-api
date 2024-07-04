@@ -26,6 +26,14 @@ export const swaggerOptions = {
     },
     tags: [
       {
+        name: 'instance',
+        description: 'Instance endpoints',
+      },
+      {
+        name: 'instance-calls',
+        description: 'Instance calls-related endpoints',
+      },
+      {
         name: 'monitoring',
         description: 'Monitoring endpoints',
       },
