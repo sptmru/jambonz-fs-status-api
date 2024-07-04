@@ -13,7 +13,6 @@ services:
       - LOKI_ENABLED=false
     ports:
       - '${HTTP_PORT:-8080}:${HTTP_PORT:-8080}'
-      - '${WS_PORT:-8081}:${WS_PORT:-8081}'
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:${HTTP_PORT}/api/v1/health']
       interval: 5s
@@ -24,7 +23,11 @@ services:
       - redis
   redis:
     image: redis:7.2.5
-    container_name: redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-lnasdoifna0asd}
+    command: redis-server --requirepass ${REDIS_PASSWORD:-lnasdoifna0asd}d
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', '--raw', 'incr', 'ping' ]
     ports:
       - "6379:6379"
     volumes:
