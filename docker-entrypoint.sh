@@ -20,6 +20,8 @@ sed -i "s|API_AUTH_TOKEN=secret|API_AUTH_TOKEN=${API_AUTH_TOKEN:-secret}|" ./bui
 sed -i "s|REDIS_URI=redis://default:lnasdoifna0asd@redis:6379|REDIS_URI=${REDIS_URI:-redis://default:lnasdoifna0asd@redis:6379}|" ./build/.env
 sed -i "s|REDIS_PASSWORD=lnasdoifna0asd|REDIS_PASSWORD=${REDIS_PASSWORD:-lnasdoifna0asd}|" ./build/.env
 
+sed -i "s|FEATURE_SERVER_MAX_CALLS=1200|FEATURE_SERVER_MAX_CALLS=${FEATURE_SERVER_MAX_CALLS:-1200}|" ./build/.env
+
 # Start service
 echo "Starting app"
 cd build && node app.js
