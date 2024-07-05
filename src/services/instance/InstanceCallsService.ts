@@ -1,25 +1,44 @@
 import { RedisClient } from '../../infrastructure/redis/client';
 import { config } from '../../infrastructure/config/config';
+import { InstanceCallsData } from '../../domain/types/instance-calls/InstanceCallsData.type';
 
 export class InstanceCallsService {
+  private static redisClient = RedisClient.getInstance().client;
+
   static async getInstanceCalls(instanceId: string): Promise<number> {
-    const callsQuantity = await RedisClient.getInstance().client.get(instanceId);
+    const callsQuantity = await this.redisClient.zScore(config.redis.instanceSet, instanceId);
     return callsQuantity === null ? config.featureServer.maxCalls + 1 : Number(callsQuantity);
   }
 
+  static async getAllInstancesSortedByCalls(): Promise<InstanceCallsData[]> {
+    const instances = await this.redisClient.zRangeWithScores(
+      config.redis.instanceSet,
+      0,
+      -1,
+      {}
+    );
+    return instances.map(instance => ({
+      instanceId: instance.value,
+      callsQuantity: instance.score,
+    }));
+  }
+
   static async setInstanceCalls(instanceId: string, callsQuantity: number): Promise<void> {
-    await RedisClient.getInstance().client.set(instanceId, callsQuantity.toString());
+    await this.redisClient.zAdd(config.redis.instanceSet, {
+      score: callsQuantity,
+      value: instanceId,
+    });
   }
 
   static async incrementInstanceCalls(instanceId: string): Promise<void> {
-    await RedisClient.getInstance().client.incr(instanceId);
+    await this.redisClient.zIncrBy(config.redis.instanceSet, 1, instanceId);
   }
 
   static async decrementInstanceCalls(instanceId: string): Promise<void> {
-    await RedisClient.getInstance().client.decr(instanceId);
+    await this.redisClient.zIncrBy(config.redis.instanceSet, -1, instanceId);
   }
 
   static async deleteInstanceData(instanceId: string): Promise<void> {
-    await RedisClient.getInstance().client.del(instanceId);
+    await this.redisClient.del(instanceId);
   }
 }
