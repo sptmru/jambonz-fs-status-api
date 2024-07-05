@@ -15,6 +15,14 @@ export class InstanceCallsController {
     return reply.code(200).send({ instanceId: instanceId, callsQuantity: callsQuantity });
   }
 
+  static async getAllInstances(
+    _request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<FastifyReply> {
+    const instanceData = await InstanceCallsService.getAllInstancesSortedByCalls();
+    return reply.code(200).send(instanceData);
+  }
+
   static async setInstanceCalls(
     request: FastifyRequest<{ Body: InstanceCallsData }>,
     reply: FastifyReply

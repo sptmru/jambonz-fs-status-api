@@ -1,5 +1,11 @@
 import { FastifyInstance } from 'fastify';
-import { deleteInstanceData, getInstanceCalls, setInstanceCalls, updateInstanceCalls } from './instance.route-options';
+import {
+  deleteInstanceData,
+  getAllInstances,
+  getInstanceCalls,
+  setInstanceCalls,
+  updateInstanceCalls,
+} from './instance.route-options';
 import { InstanceCallsController } from '../../controllers/instance/InstanceCallsController';
 
 export class InstanceRoute {
@@ -7,6 +13,7 @@ export class InstanceRoute {
 
   // eslint-disable-next-line require-await
   async routes(fastify: FastifyInstance): Promise<void> {
+    fastify.get('', getAllInstances, InstanceCallsController.getAllInstances);
     fastify.get('/:instanceId', getInstanceCalls, InstanceCallsController.getInstanceCalls);
     fastify.post('', setInstanceCalls, InstanceCallsController.setInstanceCalls);
     fastify.put('/:instanceId', updateInstanceCalls, InstanceCallsController.updateInstanceCalls);

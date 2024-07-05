@@ -43,6 +43,32 @@ export const getInstanceCalls: RouteOptionsWithoutHandler = {
   },
 };
 
+export const getAllInstances: RouteOptionsWithoutHandler = {
+  method: HttpMethods.GET,
+  url: `${baseUrl}`,
+  schema: {
+    description: 'Get all instances sorted by calls quantity',
+    summary: 'Get all instances sorted by calls quantity',
+    tags: ['instance', 'instance-calls'],
+    response: {
+      200: {
+        description: 'List of instances',
+        type: 'array',
+        items: { $ref: 'InstanceCallsData#' },
+      },
+      500: {
+        description: 'Internal server error',
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number' },
+          error: { type: 'string' },
+          message: { type: 'string' },
+        },
+      },
+    },
+  },
+};
+
 export const setInstanceCalls: RouteOptionsWithoutHandler = {
   method: HttpMethods.POST,
   url: baseUrl,
