@@ -38,7 +38,9 @@ export class InstanceCallsController {
         await InstanceCallsService.decrementInstanceCalls(instanceId);
         return reply.code(200).send({ message: 'Calls quantity decremented' });
       default:
-        return reply.code(400).send({ error: 'Invalid modification type, should be INCREMENT OR DECREMENT' });
+        return reply
+          .code(400)
+          .send({ error: 'Invalid modification type, should be INCREMENT OR DECREMENT' });
     }
   }
 

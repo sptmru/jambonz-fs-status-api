@@ -57,7 +57,11 @@ export class Api {
     });
   }
 
-  public static addAuthToRoute(request: FastifyRequest, reply: FastifyReply, done: () => void): FastifyReply | void {
+  public static addAuthToRoute(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    done: () => void
+  ): FastifyReply | void {
     const authorization = request.headers.authorization;
     if (authorization === undefined || authorization !== `Bearer ${config.api.authToken}`) {
       return reply.code(401).send({ error: 'Unauthorized' });

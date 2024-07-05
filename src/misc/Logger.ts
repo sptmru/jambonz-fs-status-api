@@ -31,7 +31,10 @@ const lokiOptions = {
 
 const transportListWithFile: TransportUnion[] = [
   new winston.transports.Console({ format: consoleLogFormat }),
-  new winston.transports.File({ filename: `${config.log.directory}/${config.log.file}`, format: fileLogFormat }),
+  new winston.transports.File({
+    filename: `${config.log.directory}/${config.log.file}`,
+    format: fileLogFormat,
+  }),
 ];
 
 const transportListWithoutFile: TransportUnion[] = [
