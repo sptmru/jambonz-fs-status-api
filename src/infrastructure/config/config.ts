@@ -28,6 +28,7 @@ export const config = {
   },
   redis: {
     uri: parsedConfig?.REDIS_URI != null ? parsedConfig.REDIS_URI : 'redis://default:lnasdoifna0asd@localhost:6379',
+    instanceSet: parsedConfig?.REDIS_INSTANCE_SET != null ? parsedConfig.REDIS_INSTANCE_SET : 'instances',
   },
   featureServer: {
     maxCalls: parsedConfig?.FEATURE_SERVER_MAX_CALLS != null ? Number(parsedConfig.FEATURE_SERVER_MAX_CALLS) : 1200,
