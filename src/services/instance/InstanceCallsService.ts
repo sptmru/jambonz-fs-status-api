@@ -7,16 +7,14 @@ export class InstanceCallsService {
 
   static async getInstanceCalls(instanceId: string): Promise<number> {
     const callsQuantity = await this.redisClient.zScore(config.redis.instanceSet, instanceId);
-    return callsQuantity === null ? config.featureServer.maxCalls + 1 : Number(callsQuantity);
+    if (callsQuantity === null) {
+      await this.setInstanceCalls(instanceId, 0);
+    }
+    return callsQuantity === null ? 0 : Number(callsQuantity);
   }
 
   static async getAllInstancesSortedByCalls(): Promise<InstanceCallsData[]> {
-    const instances = await this.redisClient.zRangeWithScores(
-      config.redis.instanceSet,
-      0,
-      -1,
-      {}
-    );
+    const instances = await this.redisClient.zRangeWithScores(config.redis.instanceSet, 0, -1, {});
     return instances.map(instance => ({
       instanceId: instance.value,
       callsQuantity: instance.score,
