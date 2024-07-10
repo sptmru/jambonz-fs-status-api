@@ -1,12 +1,14 @@
 import { RouteOptionsWithoutHandler } from '../../infrastructure/api/types/RouteOptionsWithoutHandler';
 import { OpenAPIV3 } from 'openapi-types';
 import HttpMethods = OpenAPIV3.HttpMethods;
+import { Api } from '../../infrastructure/api/server';
 
 const baseUrl = '/api/v1/instanceCalls';
 
 export const getInstanceCalls: RouteOptionsWithoutHandler = {
   method: HttpMethods.GET,
   url: `${baseUrl}/:instanceId`,
+  preValidation: [Api.addAuthToRoute],
   schema: {
     description: 'Get instance current calls quantity',
     summary: 'Get instance current calls quantity',
@@ -46,6 +48,7 @@ export const getInstanceCalls: RouteOptionsWithoutHandler = {
 export const getAllInstances: RouteOptionsWithoutHandler = {
   method: HttpMethods.GET,
   url: `${baseUrl}`,
+  preValidation: [Api.addAuthToRoute],
   schema: {
     description: 'Get all instances sorted by calls quantity',
     summary: 'Get all instances sorted by calls quantity',
@@ -72,6 +75,7 @@ export const getAllInstances: RouteOptionsWithoutHandler = {
 export const setInstanceCalls: RouteOptionsWithoutHandler = {
   method: HttpMethods.POST,
   url: baseUrl,
+  preValidation: [Api.addAuthToRoute],
   schema: {
     description: 'Set instance current calls quantity',
     summary: 'Set instance current calls quantity',
@@ -105,6 +109,7 @@ export const setInstanceCalls: RouteOptionsWithoutHandler = {
 export const updateInstanceCalls: RouteOptionsWithoutHandler = {
   method: HttpMethods.PUT,
   url: `${baseUrl}/:instanceId`,
+  preValidation: [Api.addAuthToRoute],
   schema: {
     description: 'Update instance current calls quantity',
     summary: 'Update instance current calls quantity',
@@ -141,6 +146,7 @@ export const updateInstanceCalls: RouteOptionsWithoutHandler = {
 export const deleteInstanceData: RouteOptionsWithoutHandler = {
   method: HttpMethods.DELETE,
   url: `${baseUrl}/:instanceId`,
+  preValidation: [Api.addAuthToRoute],
   schema: {
     description: 'Delete instance data',
     summary: 'Delete instance data',
