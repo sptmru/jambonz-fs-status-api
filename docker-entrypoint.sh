@@ -17,7 +17,7 @@ sed -i "s|HTTP_PORT=8478|HTTP_PORT=${HTTP_PORT:-8478}|" ./build/.env
 sed -i "s|API_BASE_PREFIX=/api/v1|API_BASE_PREFIX=${API_BASE_PREFIX:-/api/v1}|" ./build/.env
 sed -i "s|API_AUTH_TOKEN=secret|API_AUTH_TOKEN=${API_AUTH_TOKEN:-secret}|" ./build/.env
 
-sed -i "s|REDIS_URI=redis://default:lnasdoifna0asd@redis:6379|REDIS_URI=${REDIS_URI:-redis://default:lnasdoifna0asd@redis:6379}|" ./build/.env
+sed -i "s|REDIS_URI=redis://:lnasdoifna0asd@localhost:6379|REDIS_URI=${REDIS_URI:-redis://:lnasdoifna0asd@localhost:6379}|" ./build/.env
 sed -i "s|REDIS_PASSWORD=lnasdoifna0asd|REDIS_PASSWORD=${REDIS_PASSWORD:-lnasdoifna0asd}|" ./build/.env
 sed -i "s|REDIS_INSTANCE_SET=instances|REDIS_INSTANCE_SET=${REDIS_INSTANCE_SET:-instances}|" ./build/.env
 
