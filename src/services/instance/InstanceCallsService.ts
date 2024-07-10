@@ -37,6 +37,6 @@ export class InstanceCallsService {
   }
 
   static async deleteInstanceData(instanceId: string): Promise<void> {
-    await this.redisClient.del(instanceId);
+    await this.redisClient.zRem(config.redis.instanceSet, instanceId);
   }
 }
