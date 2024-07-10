@@ -33,7 +33,12 @@ export class InstanceCallsService {
   }
 
   static async decrementInstanceCalls(instanceId: string): Promise<void> {
-    await this.redisClient.zIncrBy(config.redis.instanceSet, -1, instanceId);
+    const currentCallsQuantity = await this.getInstanceCalls(instanceId);
+    if (currentCallsQuantity <= 0) {
+      await this.setInstanceCalls(instanceId, 0);
+    } else {
+      await this.redisClient.zIncrBy(config.redis.instanceSet, -1, instanceId);
+    }
   }
 
   static async deleteInstanceData(instanceId: string): Promise<void> {
