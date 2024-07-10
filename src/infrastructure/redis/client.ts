@@ -14,7 +14,13 @@ export class RedisClient {
     });
 
     this.client.on('error', error => {
-      logger.error(`Redis connection error: ${error}`);
+      if (error instanceof AggregateError) {
+        error.errors.forEach(err => {
+          logger.error(`Redis connection error: ${err}`);
+        });
+      } else {
+        logger.error(`Redis connection error: ${error}`);
+      }
     });
 
     this.client.on('end', () => {
