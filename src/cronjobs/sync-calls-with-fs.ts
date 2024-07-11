@@ -18,6 +18,7 @@ void (async (): Promise<void> => {
         await InstanceCallsService.setInstanceCalls(instance.instanceId, calls);
       }
     } catch (error) {
+      logger.debug(`sync-calls-with-fs: got error code ${error?.code} for ${instance.instanceId}`);
       if (
         error?.code === 'ENOTFOUND' ||
         error?.code === 'ETIMEDOUT' ||
