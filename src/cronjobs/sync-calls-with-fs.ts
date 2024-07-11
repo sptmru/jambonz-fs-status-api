@@ -11,14 +11,19 @@ void (async (): Promise<void> => {
   for (const instance of instances) {
     const fsUrl = `http://${instance.instanceId}:${config.featureServer.port}`;
     try {
-      const fsResponse = await axios.get(`${fsUrl}`);
+      const fsResponse = await axios.get(`${fsUrl}`, { timeout: 4000 });
       const calls = fsResponse.data?.calls;
       if (calls !== undefined) {
         logger.debug(`sync-calls-with-fs: updating calls for instance ${instance.instanceId}`);
         await InstanceCallsService.setInstanceCalls(instance.instanceId, calls);
       }
     } catch (error) {
-      if (error?.code === 'ENOTFOUND') {
+      if (
+        error?.code === 'ENOTFOUND' ||
+        error?.code === 'ETIMEDOUT' ||
+        error?.code === 'ECONNREFUSED' ||
+        error?.code === 'ECONNABORTED'
+      ) {
         logger.debug(`sync-calls-with-fs: deleting instance ${instance.instanceId}`);
         await InstanceCallsService.deleteInstanceData(instance.instanceId);
       } else {
