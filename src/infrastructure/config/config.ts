@@ -41,6 +41,8 @@ export const config = {
       parsedConfig?.REDIS_INSTANCE_SET != null ? parsedConfig.REDIS_INSTANCE_SET : 'instances',
   },
   featureServer: {
+    port:
+      parsedConfig?.FEATURE_SERVER_PORT != null ? Number(parsedConfig.FEATURE_SERVER_PORT) : 3000,
     maxCalls:
       parsedConfig?.FEATURE_SERVER_MAX_CALLS != null
         ? Number(parsedConfig.FEATURE_SERVER_MAX_CALLS)
