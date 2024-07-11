@@ -13,7 +13,7 @@ void (async (): Promise<void> => {
     try {
       const fsResponse = await axios.get(`${fsUrl}`);
       const calls = fsResponse.data?.calls;
-      if (calls) {
+      if (calls !== undefined) {
         logger.debug(`sync-calls-with-fs: updating calls for instance ${instance.instanceId}`);
         await InstanceCallsService.setInstanceCalls(instance.instanceId, calls);
       }
