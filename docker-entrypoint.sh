@@ -22,6 +22,7 @@ sed -i "s|REDIS_PASSWORD=lnasdoifna0asd|REDIS_PASSWORD=${REDIS_PASSWORD:-lnasdoi
 sed -i "s|REDIS_INSTANCE_SET=instances|REDIS_INSTANCE_SET=${REDIS_INSTANCE_SET:-instances}|" ./build/.env
 
 sed -i "s|FEATURE_SERVER_MAX_CALLS=1200|FEATURE_SERVER_MAX_CALLS=${FEATURE_SERVER_MAX_CALLS:-1200}|" ./build/.env
+sed -i "s|FEATURE_SERVER_PORT=3000|FEATURE_SERVER_PORT=${FEATURE_SERVER_PORT:-3000}|" ./build/.env
 
 # Start service
 echo "Starting app"
