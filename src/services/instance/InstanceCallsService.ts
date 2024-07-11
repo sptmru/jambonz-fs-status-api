@@ -49,7 +49,6 @@ export class InstanceCallsService {
         await this.setInstanceCalls(instanceId, 0);
         return;
       default:
-        logger.info(`Decrementing calls quantity for instance ${instanceId}`);
         await this.redisClient.zIncrBy(config.redis.instanceSet, -1, instanceId);
         return;
     }
