@@ -5,7 +5,7 @@ import { logger } from '../misc/Logger';
 
 logger.info(config.redis.uri);
 
-(async (): Promise<void> => {
+void (async (): Promise<void> => {
   const instances = await InstanceCallsService.getAllInstancesSortedByCalls();
 
   for (const instance of instances) {
