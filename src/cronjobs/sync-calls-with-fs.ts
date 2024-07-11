@@ -34,6 +34,6 @@ void (async (): Promise<void> => {
         );
       }
     }
-    process.exit(0);
   }
+  process.exit(0);
 })();
