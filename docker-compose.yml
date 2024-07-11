@@ -32,5 +32,21 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+  fs-cronjob:
+    build:
+      context: .
+      dockerfile: Dockerfile.cronjob
+    entrypoint: ./docker-entrypoint-cronjob.sh
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./logs:/usr/src/app/logs
+    restart: no
+    environment:
+      - LOG_TO_FILE=false
+      - LOKI_ENABLED=false
+      - REDIS_URI=redis://:9dRPJLXBNtAdmfS3p7czGKsZsWKSkb@redis:6379
+    depends_on:
+      - redis
 volumes:
   redis_data: {}
