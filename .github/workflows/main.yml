@@ -91,7 +91,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/jambonz-fs-status-api:${{ steps.increment_version.outputs.new_version }} .
 
       - name: Build cronjob Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/jambonz-fs-status-cronjob:${{ steps.increment_version.outputs.new_version }} .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/jambonz-fs-status-cronjob:${{ steps.increment_version.outputs.new_version }} -f Dockerfile.cronjob .
 
       - name: Push API Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/jambonz-fs-status-api:${{ steps.increment_version.outputs.new_version }}
