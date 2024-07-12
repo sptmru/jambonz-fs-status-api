@@ -37,6 +37,7 @@
   "dependencies": {
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^4.0.0",
+    "@kubernetes/client-node": "^0.21.0",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
