@@ -17,7 +17,7 @@ void (async (): Promise<void> => {
 
   try {
     const endpoints = await k8sApi.readNamespacedEndpoints(serviceName, namespace);
-    if (endpoints.body?.subsets !== undefined) {
+    if (endpoints.body.subsets !== undefined) {
       if (endpoints.body.subsets.length > 0) {
         const addresses = endpoints.body.subsets[0]?.addresses;
         if (addresses && addresses.length > 0) {
