@@ -6,6 +6,11 @@ import { logger } from '../../misc/Logger';
 export class InstanceCallsService {
   private static redisClient = RedisClient.getInstance().client;
 
+  static async instanceExists(instanceId: string): Promise<boolean> {
+    const instance = await this.redisClient.zScore(config.redis.instanceSet, instanceId);
+    return instance !== null;
+  }
+
   static async getInstanceCalls(instanceId: string): Promise<number> {
     logger.info(`Getting calls quantity for instance ${instanceId}`);
     const callsQuantity = await this.redisClient.zScore(config.redis.instanceSet, instanceId);
