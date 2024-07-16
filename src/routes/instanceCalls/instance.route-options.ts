@@ -177,3 +177,38 @@ export const deleteInstanceData: RouteOptionsWithoutHandler = {
     },
   },
 };
+
+export const deleteAllInstances: RouteOptionsWithoutHandler = {
+  method: HttpMethods.DELETE,
+  url: `${baseUrl}`,
+  preValidation: [Api.addAuthToRoute],
+  schema: {
+    description: 'Delete all instances',
+    summary: 'Delete all instances',
+    tags: ['instance', 'instance-calls'],
+    response: {
+      204: {
+        description: false,
+      },
+      400: {
+        description: 'Validation error',
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number' },
+          code: { type: 'string' },
+          error: { type: 'string' },
+          message: { type: 'string' },
+        },
+      },
+      500: {
+        description: 'Internal server error',
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number' },
+          error: { type: 'string' },
+          message: { type: 'string' },
+        },
+      },
+    },
+  },
+};

@@ -69,4 +69,12 @@ export class InstanceCallsController {
     await InstanceCallsService.deleteInstanceData(instanceId);
     return reply.code(204).send();
   }
+
+  static async deleteAllInstances(
+    _request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<FastifyReply> {
+    await InstanceCallsService.deleteAllInstancesData();
+    return reply.code(204).send();
+  }
 }

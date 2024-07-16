@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import {
   deleteInstanceData,
+  deleteAllInstances,
   getAllInstances,
   getInstanceCalls,
   setInstanceCalls,
@@ -17,6 +18,7 @@ export class InstanceRoute {
     fastify.get('/:instanceId', getInstanceCalls, InstanceCallsController.getInstanceCalls);
     fastify.post('', setInstanceCalls, InstanceCallsController.setInstanceCalls);
     fastify.put('/:instanceId', updateInstanceCalls, InstanceCallsController.updateInstanceCalls);
+    fastify.delete('', deleteAllInstances, InstanceCallsController.deleteAllInstances);
     fastify.delete('/:instanceId', deleteInstanceData, InstanceCallsController.deleteInstanceData);
   }
 }

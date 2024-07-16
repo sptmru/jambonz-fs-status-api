@@ -63,4 +63,9 @@ export class InstanceCallsService {
     logger.info(`Deleting instance ${instanceId} data`);
     await this.redisClient.zRem(config.redis.instanceSet, instanceId);
   }
+
+  static async deleteAllInstancesData(): Promise<void> {
+    logger.info(`Deleting all instances data`);
+    await this.redisClient.del(config.redis.instanceSet);
+  }
 }
