@@ -45,6 +45,33 @@ export const getInstanceCalls: RouteOptionsWithoutHandler = {
   },
 };
 
+export const getAvailableInstances: RouteOptionsWithoutHandler = {
+  method: HttpMethods.GET,
+  url: `${baseUrl}/available`,
+  preValidation: [Api.addAuthToRoute],
+  schema: {
+    description: 'Get available instances',
+    summary: 'Get available instances',
+    tags: ['instance', 'instance-calls'],
+    response: {
+      200: {
+        description: 'List of instances',
+        type: 'array',
+        items: { $ref: 'InstanceCallsData#' },
+      },
+      500: {
+        description: 'Internal server error',
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number' },
+          error: { type: 'string' },
+          message: { type: 'string' },
+        },
+      },
+    },
+  },
+};
+
 export const getAllInstances: RouteOptionsWithoutHandler = {
   method: HttpMethods.GET,
   url: `${baseUrl}`,

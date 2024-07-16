@@ -3,6 +3,7 @@ import {
   deleteInstanceData,
   deleteAllInstances,
   getAllInstances,
+  getAvailableInstances,
   getInstanceCalls,
   setInstanceCalls,
   updateInstanceCalls,
@@ -15,6 +16,7 @@ export class InstanceRoute {
   // eslint-disable-next-line require-await
   async routes(fastify: FastifyInstance): Promise<void> {
     fastify.get('', getAllInstances, InstanceCallsController.getAllInstances);
+    fastify.get('/available', getAvailableInstances, InstanceCallsController.getAvailableInstances);
     fastify.get('/:instanceId', getInstanceCalls, InstanceCallsController.getInstanceCalls);
     fastify.post('', setInstanceCalls, InstanceCallsController.setInstanceCalls);
     fastify.put('/:instanceId', updateInstanceCalls, InstanceCallsController.updateInstanceCalls);

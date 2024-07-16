@@ -29,6 +29,17 @@ export class InstanceCallsService {
     }));
   }
 
+  static async getAvailableInstances(): Promise<InstanceCallsData[]> {
+    const instances = await this.getAllInstancesSortedByCalls();
+    const availableInstances: InstanceCallsData[] = [];
+    for (const instance of instances) {
+      if (instance.callsQuantity < config.featureServer.maxCalls) {
+        availableInstances.push(instance);
+      }
+    }
+    return availableInstances;
+  }
+
   static async setInstanceCalls(instanceId: string, callsQuantity: number): Promise<void> {
     logger.info(`Setting calls quantity for instance ${instanceId} to ${callsQuantity}`);
     await this.redisClient.zAdd(config.redis.instanceSet, {
