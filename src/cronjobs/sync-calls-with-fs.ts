@@ -30,23 +30,27 @@ const execCommand = async (
       reject(data.toString());
     });
 
-    exec.exec(
-      namespace,
-      podName,
-      containerName,
-      command,
-      stdout,
-      stderr,
-      null,
-      false,
-      (status: any) => {
-        if (status && status.status !== 'Success') {
-          reject(`Command failed with status: ${status.status}`);
-        } else {
-          resolve(result);
+    try {
+      exec.exec(
+        namespace,
+        podName,
+        containerName,
+        command,
+        stdout,
+        stderr,
+        null,
+        false,
+        (status: any) => {
+          if (status && status.status !== 'Success') {
+            reject(`Command failed with status: ${status.status}`);
+          } else {
+            resolve(result);
+          }
         }
-      }
-    );
+      );
+    } catch (error) {
+      reject(`exec.exec threw an error: ${error.message}`);
+    }
   });
 };
 
