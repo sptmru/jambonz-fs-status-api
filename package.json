@@ -41,6 +41,7 @@
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
+    "node-ssh": "^13.2.0",
     "redis": "^4.6.15",
     "winston": "^3.13.0",
     "winston-loki": "^6.1.2"
