@@ -27,11 +27,12 @@ const execCommand = async (
     });
 
     stderr.on('data', data => {
+      logger.error(`Error from stderr: ${data.toString()}`);
       reject(data.toString());
     });
 
-    try {
-      exec.exec(
+    exec
+      .exec(
         namespace,
         podName,
         containerName,
@@ -42,15 +43,17 @@ const execCommand = async (
         false,
         (status: any) => {
           if (status && status.status !== 'Success') {
+            logger.error(`Command failed with status: ${status.status}`);
             reject(`Command failed with status: ${status.status}`);
           } else {
             resolve(result);
           }
         }
-      );
-    } catch (error) {
-      reject(`exec.exec threw an error: ${error.message}`);
-    }
+      )
+      .catch((error: any) => {
+        logger.error(`exec.exec threw an error: ${error.message}`);
+        reject(`exec.exec threw an error: ${error.message}`);
+      });
   });
 };
 
@@ -95,48 +98,54 @@ void (async (): Promise<void> => {
   const instances = await InstanceCallsService.getAllInstancesSortedByCalls();
 
   for (const instance of instances) {
-    const podName = await getPodNameByIp(namespace, instance.instanceId); // Map IP address to pod name
-    if (podName) {
-      try {
-        const command = ['fs_cli', '-p', 'JambonzR0ck$', '-x', 'show channels count'];
-        logger.info(`sync-calls-with-fs: executing FS CLI command for ${podName}`);
+    try {
+      const podName = await getPodNameByIp(namespace, instance.instanceId); // Map IP address to pod name
+      if (podName) {
+        try {
+          const command = ['fs_cli', '-p', 'JambonzR0ck$', '-x', 'show channels count'];
+          logger.info(`sync-calls-with-fs: executing FS CLI command for ${podName}`);
 
-        const result = await execCommand(namespace, podName, 'freeswitch', command);
-        logger.info(`sync-calls-with-fs: FS CLI command successfully executed for ${podName}`);
+          const result = await execCommand(namespace, podName, 'freeswitch', command);
+          logger.info(`sync-calls-with-fs: FS CLI command successfully executed for ${podName}`);
 
-        const channelsCountResult: string = result.split(' ')[0] as string;
-        logger.info(
-          `sync-calls-with-fs: got ${channelsCountResult} fs-cli result for ${instance.instanceId}`
-        );
-        const calls = parseInt(channelsCountResult, 10);
-
-        if (!isNaN(calls)) {
-          logger.debug(`sync-calls-with-fs: updating calls for instance ${instance.instanceId}`);
-          await InstanceCallsService.setInstanceCalls(instance.instanceId, calls);
-        } else {
-          throw new Error('Invalid call count received from FreeSWITCH');
-        }
-      } catch (error) {
-        logger.debug(
-          `sync-calls-with-fs: got error code ${error?.code} for ${instance.instanceId}`
-        );
-        if (
-          error?.code === 'ENOTFOUND' ||
-          error?.code === 'ETIMEDOUT' ||
-          error?.code === 'ECONNREFUSED' ||
-          error?.code === 'ECONNABORTED'
-        ) {
-          logger.debug(`sync-calls-with-fs: deleting instance ${instance.instanceId}`);
-          await InstanceCallsService.deleteInstanceData(instance.instanceId);
-        } else {
-          logger.error(
-            `sync-calls-with-fs: error updating calls for instance ${instance.instanceId}`,
-            error
+          const channelsCountResult: string = result.split(' ')[0] as string;
+          logger.info(
+            `sync-calls-with-fs: got ${channelsCountResult} fs-cli result for ${instance.instanceId}`
           );
+          const calls = parseInt(channelsCountResult, 10);
+
+          if (!isNaN(calls)) {
+            logger.debug(`sync-calls-with-fs: updating calls for instance ${instance.instanceId}`);
+            await InstanceCallsService.setInstanceCalls(instance.instanceId, calls);
+          } else {
+            throw new Error('Invalid call count received from FreeSWITCH');
+          }
+        } catch (error) {
+          logger.error(
+            `sync-calls-with-fs: error executing FS CLI command for ${instance.instanceId}: ${error.message}`
+          );
+          if (
+            error?.code === 'ENOTFOUND' ||
+            error?.code === 'ETIMEDOUT' ||
+            error?.code === 'ECONNREFUSED' ||
+            error?.code === 'ECONNABORTED'
+          ) {
+            logger.debug(`sync-calls-with-fs: deleting instance ${instance.instanceId}`);
+            await InstanceCallsService.deleteInstanceData(instance.instanceId);
+          } else {
+            logger.error(
+              `sync-calls-with-fs: error updating calls for instance ${instance.instanceId}`,
+              error
+            );
+          }
         }
+      } else {
+        logger.error(`sync-calls-with-fs: could not find pod for IP ${instance.instanceId}`);
       }
-    } else {
-      logger.error(`sync-calls-with-fs: could not find pod for IP ${instance.instanceId}`);
+    } catch (error) {
+      logger.error(
+        `sync-calls-with-fs: error getting pod name for IP ${instance.instanceId}: ${error.message}`
+      );
     }
   }
   process.exit(0);
