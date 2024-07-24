@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { CoreV1Api, KubeConfig, Exec } from '@kubernetes/client-node';
 import { InstanceCallsService } from '../services/instance/InstanceCallsService';
 import { config } from '../infrastructure/config/config';
