@@ -56,6 +56,7 @@ const getPodNameByIp = async (namespace: string, ip: string): Promise<string | u
   const k8sApi = kc.makeApiClient(CoreV1Api);
   const pods = await k8sApi.listNamespacedPod(namespace);
   const pod = pods.body.items.find(pod => pod.status?.podIP === ip);
+  logger.info(`sync-calls-with-fs: found pod name ${pod?.metadata?.name} for IP ${ip}`);
   return pod?.metadata?.name;
 };
 
@@ -93,8 +94,11 @@ void (async (): Promise<void> => {
     const podName = await getPodNameByIp(namespace, instance.instanceId); // Map IP address to pod name
     if (podName) {
       try {
-        const command = ['fs_cli', '-x', 'show channels count'];
+        const command = ['fs_cli', '-p', 'JambonzR0ck$', '-x', 'show channels count'];
+        logger.info(`sync-calls-with-fs: executing FS CLI command for ${podName}`);
+
         const result = await execCommand(namespace, podName, 'freeswitch', command);
+        logger.info(`sync-calls-with-fs: FS CLI command successfully executed for ${podName}`);
 
         const channelsCountResult: string = result.split(' ')[0] as string;
         logger.info(

@@ -23,6 +23,7 @@ export class InstanceCallsService {
   static async getAllInstancesSortedByCalls(): Promise<InstanceCallsData[]> {
     logger.info(`Getting all instances sorted by calls quantity`);
     const instances = await this.redisClient.zRangeWithScores(config.redis.instanceSet, 0, -1, {});
+    logger.info(`getAllInstancesSortedByCalls: instances successfully retrieved`);
     return instances.map(instance => ({
       instanceId: instance.value,
       callsQuantity: instance.score,
