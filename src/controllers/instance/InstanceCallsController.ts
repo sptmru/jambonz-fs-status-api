@@ -31,6 +31,14 @@ export class InstanceCallsController {
     return reply.code(200).send(instanceData);
   }
 
+  static async getTotalCallsOnCluster(
+    _request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<FastifyReply> {
+    const totalCalls = await InstanceCallsService.getTotalCallsOnCluster();
+    return reply.code(200).send({ totalCalls: totalCalls });
+  }
+
   static async setInstanceCalls(
     request: FastifyRequest<{ Body: InstanceCallsData }>,
     reply: FastifyReply

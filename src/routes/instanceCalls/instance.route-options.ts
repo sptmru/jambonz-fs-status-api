@@ -99,6 +99,35 @@ export const getAllInstances: RouteOptionsWithoutHandler = {
   },
 };
 
+export const getTotalCallsOnCluster: RouteOptionsWithoutHandler = {
+  method: HttpMethods.GET,
+  url: `${baseUrl}/totalcalls`,
+  preValidation: [Api.addAuthToRoute],
+  schema: {
+    description: 'Get total number of calls on the cluster',
+    summary: 'Get total number of calls on the clusters',
+    tags: ['instance', 'instance-calls'],
+    response: {
+      200: {
+        description: 'Total calls quantity',
+        type: 'object',
+        properties: {
+          totalCalls: { type: 'number' },
+        },
+      },
+      500: {
+        description: 'Internal server error',
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number' },
+          error: { type: 'string' },
+          message: { type: 'string' },
+        },
+      },
+    },
+  },
+};
+
 export const setInstanceCalls: RouteOptionsWithoutHandler = {
   method: HttpMethods.POST,
   url: baseUrl,

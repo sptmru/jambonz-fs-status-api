@@ -71,6 +71,12 @@ export class InstanceCallsService {
     }
   }
 
+  static async getTotalCallsOnCluster(): Promise<number> {
+    logger.info(`Counting cluster calls`);
+    const instances = await this.getAllInstancesSortedByCalls();
+    return instances.reduce((acc, instance) => acc + instance.callsQuantity, 0);
+  }
+
   static async deleteInstanceData(instanceId: string): Promise<void> {
     logger.info(`Deleting instance ${instanceId} data`);
     await this.redisClient.zRem(config.redis.instanceSet, instanceId);

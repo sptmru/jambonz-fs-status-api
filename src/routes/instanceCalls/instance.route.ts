@@ -7,6 +7,7 @@ import {
   getInstanceCalls,
   setInstanceCalls,
   updateInstanceCalls,
+  getTotalCallsOnCluster,
 } from './instance.route-options';
 import { InstanceCallsController } from '../../controllers/instance/InstanceCallsController';
 
@@ -18,6 +19,10 @@ export class InstanceRoute {
     fastify.get('', getAllInstances, InstanceCallsController.getAllInstances);
     fastify.get('/available', getAvailableInstances, InstanceCallsController.getAvailableInstances);
     fastify.get('/:instanceId', getInstanceCalls, InstanceCallsController.getInstanceCalls);
+    fastify.get('/totalcalls',
+      getTotalCallsOnCluster,
+      InstanceCallsController.getTotalCallsOnCluster
+    );
     fastify.post('', setInstanceCalls, InstanceCallsController.setInstanceCalls);
     fastify.put('/:instanceId', updateInstanceCalls, InstanceCallsController.updateInstanceCalls);
     fastify.delete('', deleteAllInstances, InstanceCallsController.deleteAllInstances);
